@@ -107,5 +107,3 @@ resource trafficManagerProfile 'Microsoft.Network/trafficManagerProfiles@2018-04
     }]
   }
 }
-
-// output containerIPv4Address string = containerGroupZone1.properties.ipAddress.ip
