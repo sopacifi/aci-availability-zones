@@ -35,6 +35,20 @@ az deployment group create -n DeployingAciToMultipleAvailabilityZones --resource
 Wait for the deployment to finish, then check the Azure Portal for the status of
 the resources.
 
+## Deploy using Bash script
+
+Open a bash session and execute the following steps
+
+* Open the file `aci-availability-zones.sh` edit all the variables with your unique values. 
+* Save and close.
+
+```sh
+#Run the following command
+sh aci-availability-zones.sh
+```
+Wait for the deployment to finish, then check the Azure Portal for the status of
+the resources.
+
 ## More Information
 
 For more information, see the following Microsoft Docs:
