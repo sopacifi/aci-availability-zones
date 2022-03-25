@@ -4,12 +4,12 @@
 # Route traffic for high availability of applications
 
 # Variables for Contrainer Intances Group and Traffic Manager resources
-resourceGroup ="aci-az"
-location ="East US"
-container1 = "container-aci-az-1"
-container2 = "container-aci-az-2"
-dnsNameLabelZone1 = "az-example-eastuszone1"
-dnsNameLabelZone2 = "az-example-eastuszone2"
+resourceGroup="aci-az"
+location="eastus"
+container1="container-aci-az-1"
+container2="container-aci-az-2"
+dnsNameLabelZone1="aci-az-dns-eastuszone1"
+dnsNameLabelZone2="aci-az-dns-eastuszone2"
 trafficManagerProfile="traffic-manager-profile-aci-az"
 uniqueDnsName="uniqie-dns-name-aci-az"
 
@@ -38,31 +38,32 @@ az container create \
     --location $location --zone 2
 
 
-#Create an Azure Traffic Manager resource with endpoints for East US Zone 1 and East US Zone 2​
+#Create an Azure Traffic Manager resource with endpoints for  Zone 1 and Zone 2​
 echo "Creating Azure Traffic Manager resource..."
 az network traffic-manager profile create\
     --resource-group $resourceGroup \
     --name $trafficManagerProfile \
     --routing-method Priority \
     --unique-dns-name $uniqueDnsName \
-    --ttl 10 --interval 10 --max-failures 3 -- timeout 5
+    --ttl 10 --interval 10 --max-failures 3 --timeout 5
 
-
+echo "Creating Azure Traffic Manager endpoint for $location Zone 1..."
 az network traffic-manager endpoint create \
-    --resource-group ACI-AZ \
+    --resource-group $resourceGroup \
     --name zonalendpoint1 \
     --profile-name $trafficManagerProfile \
     --type externalEndpoints \
     --priority 1 \
     --target $dnsNameLabelZone1.$location.azurecontainer.io
 
+echo "Creating Azure Traffic Manager endpoint for $location Zone 2..."
 az network traffic-manager endpoint create \
-    --resource-group ACI-AZ \
+    --resource-group $resourceGroup \
     --name zonalendpoint2 \
     --profile-name $trafficManagerProfile \
     --type externalEndpoints \
     --priority 2 \
-    --target $dnsNameLabelZone1.$location.azurecontainer.io
+    --target $dnsNameLabelZone2.$location.azurecontainer.io
 # </FullScript>
 
 # echo "Deleting all resources"
